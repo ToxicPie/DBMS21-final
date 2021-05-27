@@ -11,7 +11,7 @@ RUN chmod -R 755 /home/dbfinal
 USER dbfinal:dbfinal
 
 WORKDIR /home/dbfinal/workdir
-COPY requirements.txt .
+COPY frontend/requirements.txt .
 RUN pip install -r requirements.txt
 
 CMD ["python3", "-m", "frontend"]
