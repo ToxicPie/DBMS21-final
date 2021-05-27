@@ -1,2 +1,3 @@
 __pycache__/
-web/flask_config.py
+nginx-logs/
+flask_config.py
