@@ -33,7 +33,7 @@ services:
         volumes:
             - ./database/mariadb-init:/docker-entrypoint-initdb.d:ro
             - ./logs/mariadb:/var/lib/mysql/logs
-            - ./database/mariadb.conf:/etc/my.cnf
+            - ./mariadb.conf:/etc/my.cnf
         env_file:
             - mariadb.env
         expose:
