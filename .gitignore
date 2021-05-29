@@ -1,4 +1,3 @@
 __pycache__/
-nginx-logs/
-uwsgi-logs/
+logs/
 flask_config.py

@@ -3,7 +3,7 @@ FROM alpine:3.13
 USER root
 
 RUN apk update
-RUN apk add python3 py3-pip uwsgi-python3
+RUN apk add python3 py3-pip
 
 RUN adduser -h /home/dbfinal -D dbfinal
 RUN chown -R dbfinal:dbfinal /home/dbfinal
@@ -11,8 +11,7 @@ RUN chmod -R 755 /home/dbfinal
 USER dbfinal:dbfinal
 
 WORKDIR /home/dbfinal/workdir
-COPY backend/requirements.txt .
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY deploy/production/uwsgi-backend.ini uwsgi.ini
-CMD ["uwsgi", "--ini", "uwsgi.ini"]
+CMD ["python3", "-m", "frontend"]
