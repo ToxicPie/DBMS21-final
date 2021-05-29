@@ -30,7 +30,8 @@ services:
         restart: on-failure
         volumes:
             - ./database/mariadb-init:/docker-entrypoint-initdb.d:ro
-            - ./logs/mariadb:/var/log/mysql
+            - ./logs/mariadb:/var/lib/mysql/logs
+            - ./mariadb.conf:/etc/my.cnf
         env_file:
             - mariadb.env
         expose:

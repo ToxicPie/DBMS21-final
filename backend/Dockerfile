@@ -3,7 +3,8 @@ FROM alpine:3.13
 USER root
 
 RUN apk update
-RUN apk add python3 py3-pip
+RUN apk add musl-dev python3-dev gcc
+RUN apk add python3 py3-pip uwsgi-python3 mariadb-connector-c-dev
 
 RUN adduser -h /home/dbfinal -D dbfinal
 RUN chown -R dbfinal:dbfinal /home/dbfinal
