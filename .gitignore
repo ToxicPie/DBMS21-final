@@ -1,4 +1,4 @@
 __pycache__/
-nginx-logs/
-uwsgi-logs/
+logs/
+mariadb.env
 flask_config.py

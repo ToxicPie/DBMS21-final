@@ -2,31 +2,51 @@ version: '3'
 
 services:
     frontend:
-        build:
-            context: .
-            dockerfile: ./deploy/production/Dockerfile-frontend
+        build: frontend
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "curl", "http://localhost:8000"]
         volumes:
-            - ./frontend:/home/dbfinal/workdir/frontend:ro
-            - ./database:/home/dbfinal/workdir/database
-            - ./uwsgi-logs:/var/log/uwsgi/
-        ports:
+            - ./frontend:/workdir/frontend:ro
+            - ./logs/uwsgi:/workdir/uwsgi
+        expose:
             - '8000'
+
     backend:
-        build:
-            context: .
-            dockerfile: ./deploy/production/Dockerfile-backend
+        build: backend
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "curl", "http://localhost:8001"]
+        depends_on:
+            - mariadb
         volumes:
-            - ./backend:/home/dbfinal/workdir/backend:ro
-            - ./database:/home/dbfinal/workdir/database
-            - ./uwsgi-logs:/var/log/uwsgi/
-        ports:
+            - ./backend:/workdir/backend:ro
+            - ./logs/uwsgi:/workdir/uwsgi
+        env_file:
+            - mariadb.env
+        expose:
             - '8001'
+
+    mariadb:
+        image: mariadb:focal
+        restart: unless-stopped
+        volumes:
+            - ./database/mariadb-init:/docker-entrypoint-initdb.d:ro
+            - ./logs/mariadb:/var/lib/mysql/logs
+            - ./database/mariadb.conf:/etc/my.cnf
+        env_file:
+            - mariadb.env
+        expose:
+            - '3306'
+
     nginx:
         image: nginx:stable
+        restart: unless-stopped
+        depends_on:
+            - frontend
+            - backend
         volumes:
-            - ./deploy/production/nginx.conf:/etc/nginx/nginx.conf:ro
-            - ./nginx-logs:/etc/nginx/logs
+            - ./nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./logs/nginx:/etc/nginx/logs
         ports:
             - '80:80'
-        expose:
-            - '80'
