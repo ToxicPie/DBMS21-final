@@ -16,10 +16,25 @@ services:
         restart: on-failure
         healthcheck:
             test: ["CMD", "curl", "http://localhost:8001"]
+        depends_on:
+            - mariadb
         volumes:
             - ./backend:/home/dbfinal/workdir/backend:ro
+        env_file:
+            - mariadb.env
         expose:
             - '8001'
+
+    mariadb:
+        image: mariadb:focal
+        restart: on-failure
+        volumes:
+            - ./database/mariadb-init:/docker-entrypoint-initdb.d:ro
+            - ./logs/mariadb:/var/log/mysql
+        env_file:
+            - mariadb.env
+        expose:
+            - '3306'
 
     nginx:
         image: nginx:stable
