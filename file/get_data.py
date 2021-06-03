@@ -22,6 +22,26 @@ df = pd.read_json(json.dumps(data['products']), typ='series')
 # bazaar_catalogue['name'] = df.keys()
 # bazaar_catalogue['product_id'] = [p['product_id'] for p in df]
 
+bazaar_sell_summary = pd.DataFrame()
+for p in df:
+     temp_df = pd.DataFrame()
+     temp_df['product_id'] = [p['quick_status']['productId']] * len(p['sell_summary'])
+     temp_df['summary_index'] = (list(range(1, len(p['sell_summary']) + 1)))
+     temp_df['amount'] = [s['amount'] for s in p['sell_summary']]
+     temp_df['pricePerUnit'] = [s['pricePerUnit'] for s in p['sell_summary']]
+     temp_df['orders'] = [s['orders'] for s in p['sell_summary']]
+     bazaar_sell_summary = bazaar_sell_summary.append(temp_df)
+
+bazaar_buy_summary = pd.DataFrame()
+for p in df:
+     temp_df = pd.DataFrame()
+     temp_df['product_id'] = [p['quick_status']['productId']] * len(p['buy_summary'])
+     temp_df['summary_index'] = (list(range(1, len(p['buy_summary']) + 1)))
+     temp_df['amount'] = [s['amount'] for s in p['buy_summary']]
+     temp_df['pricePerUnit'] = [s['pricePerUnit'] for s in p['buy_summary']]
+     temp_df['orders'] = [s['orders'] for s in p['buy_summary']]
+     bazaar_buy_summary = bazaar_buy_summary.append(temp_df)
+
 bazaar_trade_history = pd.DataFrame()
 bazaar_trade_history['product_id'] = [p['quick_status']['productId'] for p in df]
 bazaar_trade_history['fetched_on'] = [dt.datetime.utcfromtimestamp(data['lastUpdated']/1000).strftime("%Y/%m/%d %H:%M:%S.%f")] * len(df)
@@ -32,3 +52,5 @@ bazaar_trade_history['sell_volume'] = [p['quick_status']['sellVolume'] for p in 
 
 # bazaar_catalogue.to_csv('/home/august/github/DBMS21-final/file/bazaar_catalogue.csv', index=False)
 bazaar_trade_history.to_csv('/home/august/github/DBMS21-final/file/bazaar_trade_history.csv', mode='a', index=False, header=False)
+bazaar_sell_summary.to_csv('/home/august/github/DBMS21-final/file/bazaar_sell_summary.csv', mode='a', index=False, header=False)
+bazaar_buy_summary.to_csv('/home/august/github/DBMS21-final/file/bazaar_buy_summary.csv', mode='a', index=False, header=False)
