@@ -27,6 +27,7 @@ for p in df:
      temp_df = pd.DataFrame()
      temp_df['product_id'] = [p['quick_status']['productId']] * len(p['sell_summary'])
      temp_df['summary_index'] = (list(range(1, len(p['sell_summary']) + 1)))
+     temp_df['fetched_on'] = [dt.datetime.utcfromtimestamp(data['lastUpdated']/1000).strftime("%Y/%m/%d %H:%M:%S.%f")] * len(p['sell_summary'])
      temp_df['amount'] = [s['amount'] for s in p['sell_summary']]
      temp_df['pricePerUnit'] = [s['pricePerUnit'] for s in p['sell_summary']]
      temp_df['orders'] = [s['orders'] for s in p['sell_summary']]
@@ -37,6 +38,7 @@ for p in df:
      temp_df = pd.DataFrame()
      temp_df['product_id'] = [p['quick_status']['productId']] * len(p['buy_summary'])
      temp_df['summary_index'] = (list(range(1, len(p['buy_summary']) + 1)))
+     temp_df['fetched_on'] = [dt.datetime.utcfromtimestamp(data['lastUpdated']/1000).strftime("%Y/%m/%d %H:%M:%S.%f")] * len(p['buy_summary'])
      temp_df['amount'] = [s['amount'] for s in p['buy_summary']]
      temp_df['pricePerUnit'] = [s['pricePerUnit'] for s in p['buy_summary']]
      temp_df['orders'] = [s['orders'] for s in p['buy_summary']]
