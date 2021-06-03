@@ -16,8 +16,22 @@ create table bazaar_sell_summary (
     primary key (product_id, summary_index)
 )
 
-load data local infile '/home/august/github/DBMS21-final/file/bazaar_sell_summary.csv'
-into table bazaar_trade_history
+load data local infile '/file/bazaar_sell_summary.csv'
+into table bazaar_sell_summary
+fields terminated by ','
+lines terminated by '\n';
+
+create table bazaar_buy_summary (
+    product_id varchar(50) not null,
+    summary_index bigint,
+    amount bigint,
+    pricePerUnit bigint,
+    order bigint,
+    primary key (product_id, summary_index)
+)
+
+load data local infile '/file/bazaar_buy_summary.csv'
+into table bazaar_buy_summary
 fields terminated by ','
 lines terminated by '\n';
 
@@ -32,7 +46,7 @@ CREATE TABLE bazaar_trade_history (
 );
 
 
-load data local infile '/home/august/github/DBMS21-final/file/bazaar_trade_history.csv'
+load data local infile '/file/bazaar_trade_history.csv'
 into table bazaar_trade_history
 fields terminated by ','
 lines terminated by '\n';
