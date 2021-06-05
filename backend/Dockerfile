@@ -4,15 +4,16 @@ USER root
 
 RUN apk update
 RUN apk add musl-dev python3-dev gcc
-RUN apk add python3 py3-pip uwsgi-python3 mariadb-connector-c-dev
+RUN apk add python3 py3-pip mariadb-connector-c-dev
 
 RUN adduser -h /home/dbfinal -D dbfinal
 RUN chown -R dbfinal:dbfinal /home/dbfinal
 RUN chmod -R 755 /home/dbfinal
 USER dbfinal:dbfinal
-
 WORKDIR /home/dbfinal/workdir
+
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+COPY . ./backend
 CMD ["python3", "-m", "backend"]

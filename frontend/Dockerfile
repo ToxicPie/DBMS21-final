@@ -9,9 +9,10 @@ RUN adduser -h /home/dbfinal -D dbfinal
 RUN chown -R dbfinal:dbfinal /home/dbfinal
 RUN chmod -R 755 /home/dbfinal
 USER dbfinal:dbfinal
-
 WORKDIR /home/dbfinal/workdir
+
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+COPY . ./frontend
 CMD ["python3", "-m", "frontend"]
