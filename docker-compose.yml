@@ -4,12 +4,16 @@ services:
     frontend:
         build: frontend
         restart: on-failure
+        volumes:
+            - ./frontend:/home/dbfinal/workdir/frontend
         expose:
             - '8000'
 
     backend:
         build: backend
         restart: on-failure
+        volumes:
+            - ./backend:/home/dbfinal/workdir/backend
         depends_on:
             - mariadb
         env_file:

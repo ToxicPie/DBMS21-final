@@ -14,5 +14,4 @@ WORKDIR /home/dbfinal/workdir
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY . ./frontend
 CMD ["python3", "-m", "frontend"]
