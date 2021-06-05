@@ -39,6 +39,7 @@ services:
             - frontend
             - backend
         volumes:
+            - ./static:/var/www/dbfinal:ro
             - ./nginx.conf:/etc/nginx/nginx.conf:ro
             - ./logs/nginx:/etc/nginx/logs
         ports:
