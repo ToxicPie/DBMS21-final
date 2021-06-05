@@ -2,7 +2,7 @@
 
 ## Setting up
 
-This project uses docker and docker-compose for its services, so first make sure you have them installed.
+This project uses docker and docker-compose for its services, so first make sure you have them installed and docker is running on your system.
 
 Copy `flask_config-example.py` to `frontend/flask_config.py` and `backend/flask_config.py` respectively. You might want to edit their contents, for example, setting `DEBUG = True` in a development environment.
 
@@ -14,4 +14,4 @@ docker-compose build
 docker-compose up
 ```
 
-To start a development server, first switch to the development branch by `git checkout development`, then the commands above.
+To start a development server, first switch to the development branch by `git checkout development`, then run the commands above.
