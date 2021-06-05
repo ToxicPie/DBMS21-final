@@ -18,11 +18,9 @@ services:
             - '8001'
 
     mariadb:
-        image: mariadb:focal
+        build: database
         restart: on-failure
         volumes:
-            - ./database/mariadb-init:/docker-entrypoint-initdb.d:ro
-            - ./database/csv:/var/lib/mysql/csv
             - ./logs/mariadb:/var/lib/mysql/logs
             - ./mariadb.conf:/etc/my.cnf:ro
         env_file:
