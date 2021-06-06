@@ -10,4 +10,5 @@
 *.env filter=lfs diff=lfs merge=lfs -text
 *.conf filter=lfs diff=lfs merge=lfs -text
 /database/Dockerfile filter=lfs diff=lfs merge=lfs -text
+*.js filter=lfs diff=lfs merge=lfs -text
 * !text !filter !merge !diff
