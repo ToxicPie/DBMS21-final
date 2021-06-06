@@ -1,6 +1,5 @@
 import mariadb
 import os
-import json
 
 
 class DBConnection():
@@ -26,16 +25,16 @@ def _row_to_dict(row, fields):
         result[field] = value
     return result
 
-def fetchone_json(cursor):
+def fetchone_dict(cursor):
     '''
-    Fetches one row from a cursor and returns it as JSON.
+    Fetches one row from a cursor and returns it as a dict.
     '''
     fields = [desc[0] for desc in cursor.description]
-    return json.dumps(_row_to_dict(cursor.fetchone(), fields))
+    return _row_to_dict(cursor.fetchone(), fields)
 
-def fetchall_json(cursor):
+def fetchall_dict(cursor):
     '''
-    Fetches all rows from a cursor and returns it as JSON.
+    Fetches all rows from a cursor and returns it as a list of dicts.
     '''
     fields = [desc[0] for desc in cursor.description]
-    return json.dumps([_row_to_dict(row, fields) for row in cursor.fetchall()])
+    return [_row_to_dict(row, fields) for row in cursor.fetchall()]

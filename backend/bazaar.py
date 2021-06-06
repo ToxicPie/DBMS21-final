@@ -1,6 +1,6 @@
 import flask
 import json
-from .database import db_connection, fetchall_json, fetchone_json
+from .database import db_connection, fetchall_dict, fetchone_dict
 
 
 blueprint = flask.Blueprint('bazaar_api', __name__)
@@ -24,7 +24,7 @@ def bazaar_products():
 
     with db_connection.get_cursor(named_tuple=True) as cursor:
         cursor.execute(query)
-        return fetchall_json(cursor)
+        return flask.jsonify(fetchall_dict(cursor))
 
 
 @blueprint.route('/bazaar/search')
