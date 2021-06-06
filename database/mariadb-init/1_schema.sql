@@ -9,7 +9,7 @@ CREATE TABLE bazaar_catalogue (
 
 CREATE TABLE bazaar_trade_history (
     product_id  VARCHAR(50)     NOT NULL,
-    fetched_on  DATETIME        NOT NULL,
+    fetched_on  DATETIME(3)     NOT NULL,
     buy_price   DECIMAL(18, 1),
     buy_volume  BIGINT,
     sell_price  DECIMAL(18, 1),
@@ -20,7 +20,7 @@ CREATE TABLE bazaar_trade_history (
 
 CREATE TABLE bazaar_sell_summary (
     product_id  VARCHAR(50)     NOT NULL,
-    fetched_on  DATETIME        NOT NULL,
+    fetched_on  DATETIME(3)     NOT NULL,
     order_index TINYINT         NOT NULL,
     price       DECIMAL(18, 1),
     volume      BIGINT,
@@ -31,7 +31,7 @@ CREATE TABLE bazaar_sell_summary (
 
 CREATE TABLE bazaar_buy_summary (
     product_id  VARCHAR(50)     NOT NULL,
-    fetched_on  DATETIME        NOT NULL,
+    fetched_on  DATETIME(3)     NOT NULL,
     order_index TINYINT         NOT NULL,
     price       DECIMAL(18, 1),
     volume      BIGINT,
