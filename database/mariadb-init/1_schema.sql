@@ -1,4 +1,3 @@
-CREATE DATABASE dbfinal;
 USE dbfinal;
 
 CREATE TABLE bazaar_catalogue (
