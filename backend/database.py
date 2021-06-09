@@ -1,27 +1,34 @@
 import mariadb
 import os
+import sys
+import decimal
 
 
 class DBConnection():
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         username = os.environ.get('MARIADB_USER')
         password = os.environ.get('MARIADB_PASSWORD')
         self.conn = mariadb.connect(host='mariadb',
                                     user=username,
                                     password=password,
-                                    database='dbfinal')
+                                    database='dbfinal',
+                                    **kwargs)
 
     def get_cursor(self, **kwargs):
         return self.conn.cursor(**kwargs)
 
-
-db_connection = DBConnection()
+    def commit(self):
+        self.conn.commit()
 
 
 def _row_to_dict(row, fields):
+    if row is None:
+        return None
     result = dict()
     for value, field in zip(row, fields):
+        if isinstance(value, decimal.Decimal):
+            value = float(value)
         result[field] = value
     return result
 
