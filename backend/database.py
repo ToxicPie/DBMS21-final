@@ -15,6 +15,9 @@ class DBConnection():
                                     database='dbfinal',
                                     **kwargs)
 
+    def __del__(self):
+        self.conn.close()
+
     def get_cursor(self, **kwargs):
         return self.conn.cursor(**kwargs)
 

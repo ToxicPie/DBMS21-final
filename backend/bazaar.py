@@ -102,9 +102,11 @@ def bazaar_status():
                 if (product['sell_summary'] and product['buy_summary']):
                     product_id = product['product_id']
                     buy_price = product['buy_summary'][0]['pricePerUnit']
-                    buy_volume = sum(order['amount'] for order in product['buy_summary'])
+                    buy_volume = sum(order['amount']
+                                     for order in product['buy_summary'])
                     sell_price = product['sell_summary'][0]['pricePerUnit']
-                    sell_volume = sum(order['amount'] for order in product['sell_summary'])
+                    sell_volume = sum(order['amount']
+                                      for order in product['sell_summary'])
                     data_rows.append(
                         (product_id, time_now,
                          buy_price, buy_volume,
@@ -152,8 +154,41 @@ def bazaar_status():
 
     return flask.jsonify(result)
 
-
-
+import sys
 @blueprint.route('/bazaar/history')
 def bazaar_history():
-    return 'not yet implemented', 400
+    product_id = flask.request.args.get('product_id', '')
+
+    sql_stmt = '''
+    SELECT  UNIX_TIMESTAMP(fetched_on) AS `timestamp`,
+            buy_price,
+            buy_volume,
+            sell_price,
+            sell_volume
+    FROM bazaar_trade_history
+    WHERE product_id = ?;
+    '''
+
+    result = {
+        'timestamps': [],
+        'buy_prices': [],
+        'buy_volumes': [],
+        'sell_prices': [],
+        'sell_volumes': []
+    }
+
+    with DBConnection().get_cursor(named_tuple=True) as cursor:
+        cursor.execute(sql_stmt, (product_id, ))
+
+        while (row := cursor.fetchone()):
+            result['timestamps'].append(int(row.timestamp * 1000))
+            result['buy_prices'].append(float(row.buy_price))
+            result['buy_volumes'].append(row.buy_volume)
+            result['sell_prices'].append(float(row.sell_price))
+            result['sell_volumes'].append(row.sell_volume)
+
+    if not result['timestamps']:
+        return bad_api_request('No data found.')
+
+    else:
+        return flask.jsonify(result)
