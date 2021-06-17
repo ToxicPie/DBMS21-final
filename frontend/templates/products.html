@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<div class="content">
+    <h3>Search products</h3>
+    <form class="form-inline my-2 my-lg-0" onsubmit="return false">
+      <input class="form-control mr-sm-2" id="Search_product" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" id="Search_product_btn" type="submit">Search</button>
+    </form>
+    <div id="container"></div>
+</div>
+<script src="/static/js/products.js"></script>
+{% endblock %}

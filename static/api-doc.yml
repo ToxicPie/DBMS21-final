@@ -1,160 +1,44 @@
-openapi: 3.0.3
+openapi: '3.0.3'
+
 info:
-  title: DBMS Final Project API
+  description: >
+    The API of Team 3's final project of NCTU 2021 Spring Introduction To Database Systems course.
   version: '0.1'
-  description: |
-    The API of Team 3's final project of NCTU 2021 Spring Introduction To
-    Database Systems course.
+  title: 'DBMS Final Project API'
   license:
-    name: MIT
+    name: 'MIT'
     url: 'https://mit-license.org/'
+
 servers:
-  - url: 'http://localhost/api'
-    description: Local testing server
+- url: 'http://localhost/api'
+  description: Local testing server
+
 tags:
-  - name: User
-    description: Interactions with the user account
-  - name: Bazaar
-    description: Interactions with the Hypixel Bazaar database
+- name: Bazaar
+  description: 'Interactions with the Hypixel Bazaar database'
+
+schemes:
+- https
+- http
+
 paths:
-  /user/new:
-    post:
-      tags:
-        - User
-      summary: Create a new user
-      description: |
-        Creates a new user with the specified credentials.
-        On success, will work as if the new user has just logged in.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  description: |
-                    The username for the user to create.
-                  type: string
-                password:
-                  description: |
-                    The password for the user.
-                  type: string
-            examples:
-              user1:
-                value:
-                  username: Henry
-                  password: tC6Fq5FZh4xw4VSpraBhqA
-      responses:
-        '200':
-          description: Successfully created an user
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  session_id:
-                    type: string
-                    format: uuid
-                    description: |
-                      The session ID, which is a hex UUID string.
-                example:
-                  - session_id: 7cc3f8da-d866-4abf-a258-b08ffd9e6e87
-        '400':
-          description: An invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: A string describing the error.
-                example:
-                  - error: That user ID is taken.
-  /user/login:
-    post:
-      tags:
-        - User
-      summary: Log in as an user
-      description: Creates a new user with the specified credentials.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  description: |
-                    The username of the user.
-                  type: string
-                password:
-                  description: |
-                    The password of the user.
-                  type: string
-            examples:
-              user1:
-                value:
-                  username: Henry
-                  password: tC6Fq5FZh4xw4VSpraBhqA
-      responses:
-        '200':
-          description: Successfully logged in
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  session_id:
-                    type: string
-                    format: uuid
-                    description: |
-                      The session ID, which is a hex UUID string.
-                example:
-                  - session_id: aa77763f-46ed-4720-98b9-5ef4a0e3adc1
-        '401':
-          description: Incorrect username or password
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: |
-                      The error message.
-                example:
-                  - error: 'The username or password is invalid.'
-  /user/logout:
-    post:
-      tags:
-        - User
-      summary: Log out an user
-      description: Logs the user out of the current session.
-      security:
-        - session_id: []
-      responses:
-        '200':
-          description: Successfully logged out
-        '401':
-          $ref: '#/components/responses/Unauthorized'
   /bazaar/products:
     get:
       tags:
         - Bazaar
-      summary: Bazaar product list
-      description: Fetches a list of Bazaar products available.
+      summary: 'Bazaar product list'
+      description: 'Fetches a list of Bazaar products available.'
       parameters:
-        - name: all
-          in: query
-          description: |
-            If `true`, returns a list of all products. Otherwise, only returns
-            the products currently available on Bazaar.
-          schema:
-            type: boolean
-            default: false
+      - name: all
+        in: query
+        description: >
+          If `true`, returns a list of all products. Otherwise, only returns the products currently available on Bazaar.
+        schema:
+          type: boolean
+          default: false
       responses:
         '200':
-          description: A successful response
+          description: 'A successful response'
           content:
             application/json:
               schema:
@@ -164,43 +48,43 @@ paths:
                   properties:
                     product_id:
                       type: string
-                      description: The ID of a product.
+                      description: 'The ID of a product.'
                     name:
                       type: string
-                      description: The display name of a product.
+                      description: 'The display name of a product.'
                 example:
-                  - product_id: ENCHANTED_DIAMOND
-                    name: Enchanted Diamond
-                  - product_id: POTATO
-                    name: Potato
+                - product_id: ENCHANTED_DIAMOND
+                  name: Enchanted Diamond
+                - product_id: POTATO
+                  name: Potato
+
   /bazaar/search:
     get:
       tags:
         - Bazaar
-      summary: Search for a product
-      description: |
-        Search for matching Bazaar products by their names. This search is
-        case-insensitive. In exact mode, it returns the products with the exact
-        same name as given. In non-exact mode, it returns a list of products
-        which contain the query string as a substring.
+      summary: 'Search for a product'
+      description: >
+        Search for matching Bazaar products by their names. This search is case-insensitive.
+        In exact mode, it returns the products with the exact same name as given.
+        In non-exact mode, it returns a list of products which contain the query string as a substring.
       parameters:
-        - name: query
-          in: query
-          required: true
-          description: |
-            The name of the product to search for.
-          schema:
-            type: string
-        - name: exact
-          in: query
-          description: |
-            If `true`, only return exact matches.
-          schema:
-            type: boolean
-            default: false
+      - name: query
+        in: query
+        required: true
+        description: >
+          The name of the product to search for.
+        schema:
+          type: string
+      - name: exact
+        in: query
+        description: >
+          If `true`, only return exact matches.
+        schema:
+          type: boolean
+          default: false
       responses:
         '200':
-          description: A successful response
+          description: 'A successful response'
           content:
             application/json:
               schema:
@@ -210,54 +94,43 @@ paths:
                   properties:
                     product_id:
                       type: string
-                      description: The ID of the product.
+                      description: 'The ID of the product.'
                     name:
                       type: string
-                      description: The display name of the product.
+                      description: 'The display name of the product.'
                 example:
-                  - product_id: TARANTULA_SILK
-                    name: Tarantula Silk
-                  - product_id: TARANTULA_WEB
-                    name: Tarantula Web
+                - product_id: TARANTULA_SILK
+                  name: Tarantula Silk
+                - product_id: TARANTULA_WEB
+                  name: Tarantula Web
+
   /bazaar/status:
     get:
       tags:
         - Bazaar
-      summary: Bazaar product status
-      description: |
-        Fetches the current Bazaar status of the given product(s) from the
-        official API. The result will only be updated if the newest one is more
-        than 10 minutes old.
+      summary: 'Bazaar product status'
+      description: >
+        Fetches the current Bazaar status of the given product(s). The result is cached on the server for 10 minutes.
       parameters:
-        - name: product_id
-          in: query
-          requied: true
-          description: |
-            A list containing the ID's of products to fetch the statistics for.
-            If an empty list is given, returns the stats of all available
-            products.
-          schema:
-            type: array
-            items:
-              type: string
-            default: []
-          examples:
-            good1:
-              value:
-                - IRON_INGOT
-              summary: A valid request for 1 product.
-            good2:
-              value:
-                - PORK
-                - DIAMOND
-              summary: A valid request for 2 products.
-            bad:
-              value:
-                - SCHMETTERLING
-              summary: An invalid request.
+      - name: product_id
+        in: query
+        description: >
+          A list containing the ID's of products to fetch the statistics for. If an empty list is given, returns the stats of all available products.
+        schema:
+          type: array
+          items:
+            type: string
+          default: []
+        examples:
+          good:
+            value: ['PORK', 'DIAMOND']
+            summary: A valid request.
+          bad:
+            value: ['SCHMETTERLING']
+            summary: An invalid request.
       responses:
         '200':
-          description: A successful response
+          description: 'A successful response'
           content:
             application/json:
               schema:
@@ -266,57 +139,46 @@ paths:
                   updated_on:
                     type: integer
                     format: int64
-                    description: |
-                      The last time when the stats were updated from official
-                      sources. This value is given as the number of milliseconds
-                      since the Unix epoch.
+                    description: >
+                      The last time when the stats were updated from official sources. This value is given as the number of milliseconds since the Unix epoch.
                   result:
                     type: array
-                    description: A list of product stats.
+                    description: 'A list of product stats.'
                     items:
                       type: object
                       properties:
                         product_id:
                           type: string
-                          description: The product ID.
-                        product_name:
-                          type: string
-                          description: The display name of the product.
+                          description: 'The product ID.'
                         buy_price:
                           type: number
-                          description: |-
-                            The buy price of the product. This value is given
-                            with exactly one decimal digit.
+                          description: 'The buy price of the product. This value is given with exactly one decimal digit.'
                         buy_volume:
                           type: integer
                           format: int64
-                          description: The total buy volume of the product.
+                          description: 'The total buy volume of the product.'
                         sell_price:
                           type: number
-                          description: |-
-                            The sell price of the product. This value is given
-                            with exactly one decimal digit.
+                          description: 'The sell price of the product. This value is given with exactly one decimal digit.'
                         sell_volume:
                           type: integer
                           format: int64
-                          description: The total sell volume of the product.
+                          description: 'The total sell volume of the product.'
               example:
                 updated_on: 1622688894434
                 result:
-                  - product_id: PORK
-                    product_name: Raw Porkchop
-                    buy_price: 11.8
-                    buy_volume: 881753
-                    sell_price: 7.4
-                    sell_volume: 881409
-                  - product_id: DIAMOND
-                    product_name: Diamond
-                    buy_price: 7.8
-                    buy_volume: 968240
-                    sell_price: 7.5
-                    sell_volume: 3574635
+                - product_id: PORK
+                  buy_price: 11.8
+                  buy_volume: 881753
+                  sell_price: 7.4
+                  sell_volume: 881409
+                - product_id: DIAMOND
+                  buy_price: 7.8
+                  buy_volume: 968240
+                  sell_price: 7.5
+                  sell_volume: 3574635
         '400':
-          description: A bad request
+          description: 'A bad request'
           content:
             application/json:
               schema:
@@ -324,155 +186,6 @@ paths:
                 properties:
                   error:
                     type: string
-                    description: |-
-                      A string describing the error occurred while processing
-                      the request.
+                    description: 'A string describing the error occurred while processing the request.'
                 example:
-                  - error: '"SCHMETTERLING" is not a valid product ID.'
-  /bazaar/history:
-    get:
-      tags:
-        - Bazaar
-      summary: Bazaar product history
-      description: |
-        Fetches the historical Bazaar data of a given product within a specific
-        time range.
-      parameters:
-        - name: product_id
-          in: query
-          requied: true
-          description: |
-            The ID of the product to fetch the history of. It must be a valid
-            product ID.
-          schema:
-            type: string
-        - name: begin_time
-          in: query
-          description: |
-            The earliest time of a row of data to fetch. If omitted, returns
-            data from the beginning of time.
-          schema:
-            oneOf:
-              - type: integer
-                format: int64
-                description: A Unix timestamp.
-              - type: string
-                description: |
-                  A datetime string, given in `YYYY-MM-DD HH:mm:ss` format.
-          examples:
-            time1:
-              value: 1622779234
-              summary: Time given as a Unix timestamp.
-            time2:
-              value: '2021-06-04 12:00:34'
-              summary: Time given as a string.
-        - name: end_time
-          in: query
-          description: |
-            The latest time of a row of data to fetch. If omitted, returns data
-            until the current time.
-          schema:
-            oneOf:
-              - type: integer
-                format: int64
-                description: A Unix timestamp.
-              - type: string
-                description: |
-                  A datetime string, given in `YYYY-MM-DD HH:mm:ss` format.
-          examples:
-            time1:
-              value: 1622779234
-              summary: Time given as a Unix timestamp.
-            time2:
-              value: '2021-06-04 12:00:34'
-              summary: Time given as a string.
-      responses:
-        '200':
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                description: |
-                  The result is returned as several lists of the same length,
-                  which each describe the values for each column.
-                properties:
-                  timestamps:
-                    type: array
-                    description: |
-                      The list of timestamps for each row, increasingly sorted.
-                    items:
-                      type: integer
-                      format: int64
-                  buy_prices:
-                    type: array
-                    description: |
-                      The corresponding buy price of the product at each
-                      timestamp. The values are given with one decimal digit.
-                    items:
-                      type: number
-                  buy_volumes:
-                    type: array
-                    description: |
-                      The total buy volume in all orders of the product at each
-                      timestamp.
-                    items:
-                      type: integer
-                      format: int64
-                  sell_prices:
-                    type: array
-                    description: |
-                      The corresponding sell price of the product at each
-                      timestamp. The values are given with one decimal digit.
-                    items:
-                      type: number
-                  sell_volumes:
-                    type: array
-                    description: |
-                      The total sell volume in all orders of the product at each
-                      timestamp.
-                    items:
-                      type: integer
-                      format: int64
-              example:
-                timestamps: []
-        '400':
-          description: A bad request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: |
-                      A string describing the error occurred while processing
-                      the request.
-                example:
-                  - error: '"HAPPINESS" is not a valid product ID.'
-components:
-  securitySchemes:
-    session_id:
-      description: |
-        The user's session ID, which can be obtained from logging in or
-        upon creating an user.
-      type: apiKey
-      in: cookie
-      name: API_session_ID
-      examples:
-        session1:
-          value: aa77763f-46ed-4720-98b9-5ef4a0e3adc1
-  responses:
-    Unauthorized:
-      description: Invalid session ID
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                description: |
-                  A string describing the error.
-            example:
-              - error: 'The provided session ID is invalid.'
+                - error: '"SCHMETTERLING" is not a valid product ID.'

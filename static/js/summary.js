@@ -1,31 +1,38 @@
-let query = new URLSearchParams({product_id: product_id});
+console.log(product_id)
 
 async function get_data() {
-    let query = new URLSearchParams({product_id: product_id});
-    let resp = await fetch('/api/bazaar/history?' + query.toString());
-    let ret = await resp.json();
+    let url = new URL('http://localhost/api/bazaar/history'),
+        params = {product_id: product_id};
+
+    url.search = new URLSearchParams(params).toString();
+
+    let resp = await fetch(url);
+    let data = await resp.json();
 
     let buy_prices = [],
         buy_volumes = [],
         sell_prices = [],
         sell_volumes = [];
 
-    for (var i = 0; i < ret.timestamps.length; i++) {
-        buy_prices.push([ret.timestamps[i], ret.buy_prices[i]]);
-        buy_volumes.push([ret.timestamps[i], ret.buy_volumes[i]]);
-        sell_prices.push([ret.timestamps[i], ret.sell_prices[i]]);
-        sell_volumes.push([ret.timestamps[i], ret.sell_volumes[i]]);
+    for (var i = 0; i < data.timestamps.length; i++) {
+        buy_prices.push([data.timestamps[i], data.buy_prices[i]]);
+        buy_volumes.push([data.timestamps[i], data.buy_volumes[i]]);
+        sell_prices.push([data.timestamps[i], data.sell_prices[i]]);
+        sell_volumes.push([data.timestamps[i], data.sell_volumes[i]]);
     }
     return { buy_prices, buy_volumes, sell_prices, sell_volumes };
 }
 
-async function draw_chart() {
-
+async function plot_chart(){
     const {
         buy_prices, buy_volumes, sell_prices, sell_volumes
     } = await get_data();
 
-    let chart = Highcharts.stockChart('chart-container', {
+    let chart = Highcharts.stockChart('container', {
+        chart: {
+            backgroundColor: '#353535'
+        },
+
         rangeSelector: {
             selected: 1
         },
@@ -87,4 +94,4 @@ async function draw_chart() {
     });
 }
 
-await draw_chart();
+plot_chart();

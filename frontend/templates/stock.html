@@ -1,24 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>DBMS Final Project</title>
-    <link rel="stylesheet" href="/static/css/highcharts.css" />
-    <link rel="stylesheet" href="/static/css/chart.css" />
-    <script src="https://code.highcharts.com/stock/highstock.js"></script>
-    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
-    <script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
-    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
-    <script>
-        const product_id = '{{product_id}}';
-    </script>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Sell Stock{% endblock %}
+{% block content %}
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<center>
+    <h2>Sell Price Candlestick Chart for <span id="product-name">{{ product_id }}</span></h2>
+</center>
+<figure class="highcharts-figure">
     <div class="content">
-        <div class="section title">
-            <h1>Sell Price Candlestick Chart for <span id="product-name">{{ product_id }}</span></h1>
-        </div>
         <div id="chart-container" style="height: 800px; min-width: 310px"></div>
     </div>
-    <script type="module" src="/static/js/stock-chart.js"></script>
-</body>
-</html>
+</figure>
+<script type="text/javascript">
+    var product_id = "{{product_id}}"
+</script>
+<script type="module" src="/static/js/stock-chart.js"></script>
+{% endblock %}
